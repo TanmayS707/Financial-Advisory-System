@@ -1,0 +1,73 @@
+// Main Function: create_visualization
+FUNCTION create_visualization(plot_type, dataframe, columns, title, output_path)
+    SWITCH plot_type:
+        CASE 'scatter':
+            CREATE scatter plot using columns[0] for x-axis and columns[1] for y-axis
+            SET marker size and line properties
+            SET axis labels and title
+        
+        CASE 'line':
+            CREATE line plot using columns[0] for x-axis and columns[1] for y-axis
+            ADD markers to line
+            SET line width and style
+            SET axis labels and title
+        
+        CASE 'bar':
+            CREATE bar chart using columns[0] for categories and columns[1] for values
+            SET axis labels and title
+        
+        CASE 'histogram':
+            CREATE histogram of Amount column
+            COLOR bars by Category
+            SET overlay mode for multiple categories
+            SET axis labels and title
+        
+        CASE 'heatmap':
+            CALCULATE correlation matrix from selected columns
+            CREATE heatmap visualization
+            SET color scale
+        
+        CASE 'box':
+            CREATE box plot using columns[0] for categories and columns[1] for values
+            SET axis labels and title
+        
+        CASE 'pie':
+            CALCULATE total values for each category
+            CREATE pie chart with percentages and labels
+            PULL OUT largest slice slightly
+            SET title
+    
+    DISPLAY visualization
+    // SAVE visualization to output_path (currently commented out)
+
+// Main Data Processing Function
+FUNCTION process_financial_data(json_data)
+    CONVERT json_data to DataFrame
+    
+    // Data Cleaning
+    CONVERT 'Date' column to datetime
+    CONVERT 'Amount' column to numeric
+    REMOVE rows where Category is '-'
+    
+    CREATE directory for visualization output
+    
+    // Generate Various Visualizations
+    CREATE line plot for daily spending pattern
+    CREATE bar chart for spending by category
+    CREATE histogram for transaction distribution
+    CREATE pie chart for category breakdown
+
+// Agent Setup and Configuration
+INITIALIZE configuration for Gemini model
+SET random seed
+
+CREATE AssistantAgent with data analysis expertise
+CREATE UserProxyAgent for automated interaction
+CREATE GroupChat with agents
+CREATE GroupChatManager to handle chat flow
+
+// Main Execution Flow
+CONVERT DataFrame to JSON
+CALL process_financial_data with JSON data
+DISPLAY message about created visualizations
+SEND completion message to chat manager

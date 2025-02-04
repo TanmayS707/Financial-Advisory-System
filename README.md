@@ -1,6 +1,10 @@
 # Financial-Advisory-System
+## Bank Statement Image
+![BankStatementChequing](https://github.com/user-attachments/assets/8ec7008b-b5ee-4ab4-b9cc-bdda508664f7)
+
 ## Data Extracted from Bank Statement Image
 ![WhatsApp Image 2025-02-05 at 00 51 53](https://github.com/user-attachments/assets/e412b234-8e27-44f3-ae64-e3b603e0d861)
+
 
 ## Agemntic AI Visulaisation
 ![WhatsApp Image 2025-02-05 at 00 53 19](https://github.com/user-attachments/assets/47617e49-f8d3-4017-ba46-627c8195ed6f)

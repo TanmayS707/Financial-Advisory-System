@@ -1,0 +1,98 @@
+// Initialize Global Variables and Constants
+SET EMBEDDING_MODEL = "models/text-embedding-004"
+SET VECTORSTORE_NAME = "documents"
+SET INPUT_FOLDER = path to data folder
+SET DB_DIR = path to vector database
+SET retriever = None
+SET embedding = None
+
+// Main Database Setup Function
+FUNCTION setup_db()
+    CREATE embedding using Google Generative AI
+    CREATE client for database connection
+    CREATE vectorstore using Chroma with client and embedding
+    CREATE byte store in memory
+    SET id_key for documents
+    CREATE retriever using vectorstore and byte store
+    RETURN vectorstore
+
+// Get Database Client Function
+FUNCTION get_client()
+    RETURN persistent client with database path and settings
+
+// Main Database Initialization Function
+FUNCTION initialize_vectordb()
+    IF database directory exists AND is not empty THEN
+        PRINT "Loading existing database"
+        CALL setup_db()
+    ELSE
+        TRY
+            GET documents by loading and chunking JSON files
+            ADD documents to vector database
+            PRINT success message
+        CATCH any error
+            PRINT error message
+            RAISE error
+
+// JSON Loading and Processing Function
+FUNCTION load_and_chunk_json_with_metadata()
+    CREATE empty list for all_documents
+    
+    FIND all JSON files in input folder
+    IF no JSON files found THEN
+        RAISE error
+    
+    FOR each JSON file:
+        TRY
+            GET filename from path
+            CREATE JSON loader for file
+            LOAD documents from file
+            
+            FOR each document:
+                CONVERT document content to dictionary
+                ADD metadata:
+                    - model name
+                    - source file
+                    - file path
+                    - document type
+                
+            ADD processed documents to all_documents
+            PRINT success message
+        CATCH any error
+            PRINT error message
+            CONTINUE to next file
+    
+    IF all_documents is empty THEN
+        RAISE error
+    
+    RETURN all_documents
+
+// Document Addition Function
+FUNCTION add_documents_to_vectordb(documents)
+    TRY
+        SET batch size = 50
+        SET id_key = "doc_id"
+        CREATE vectorstore by calling setup_db
+        
+        GENERATE unique IDs for all documents
+        
+        FOR each batch of documents:
+            GET current batch of documents
+            GET corresponding batch of IDs
+            
+            IF batch is not empty THEN
+                FOR each document and ID:
+                    ADD ID to document metadata
+                ADD batch to vectorstore
+        
+        PRINT success message
+    CATCH any error
+        PRINT error message
+        RAISE error
+
+// Data Retrieval Function
+FUNCTION get_data()
+    RETURN retriever and embedding
+
+// Start Initialization
+CALL initialize_vectordb()
